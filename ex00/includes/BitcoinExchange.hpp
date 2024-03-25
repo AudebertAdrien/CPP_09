@@ -6,7 +6,7 @@
 /*   By: motoko <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 14:21:43 by motoko            #+#    #+#             */
-/*   Updated: 2024/03/25 15:03:47 by motoko           ###   ########.fr       */
+/*   Updated: 2024/03/25 17:59:30 by motoko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 #include <string>
 #include <fstream>
 #include <cstdlib>
+#include <cctype>
+
 
 class BitcoinExchange {
 	private:
@@ -27,4 +29,5 @@ class BitcoinExchange {
 		~BitcoinExchange();
 
 		void	run(const std::string &filename);
+		bool	allDigits(const std::string &str);
 };
