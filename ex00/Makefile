@@ -6,7 +6,7 @@
 #    By: motoko <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/02 14:26:47 by motoko            #+#    #+#              #
-#    Updated: 2024/03/25 14:11:13 by motoko           ###   ########.fr        #
+#    Updated: 2024/03/25 14:47:25 by motoko           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,8 @@ INCLUDES_DIR	:= includes
 
 VPATH			:= $(SRCS_DIR):
 
-SRCS			:= main.cpp		\
+SRCS			:= main.cpp				\
+				   BitcoinExchange.cpp
 
 CC				:= c++
 CFLAGS			:= -Wall -Wextra 
@@ -58,11 +59,11 @@ $(OBJS_DIR):
 clean:
 	@$(RM) $(OBJS)
 	@$(RM) $(OBJS_DIR)
-	@printf "$(YELLOW)    - Object files removed.$(RESET)\n"
+	@printf "$(YELLOW)- Object files removed.\n$(RESET)"
 
 fclean: clean
 	@$(RM) $(NAME)
-	@printf "$(YELLOW)    - Executable removed.$(RESET)\n"
+	@printf "$(YELLOW)- Executable removed.\n$(RESET)"
 
 re: fclean all
 

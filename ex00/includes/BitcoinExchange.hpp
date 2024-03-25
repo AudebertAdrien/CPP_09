@@ -1,30 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   BitcoinExchange.hpp                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: motoko <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/25 14:10:01 by motoko            #+#    #+#             */
-/*   Updated: 2024/03/25 15:09:49 by motoko           ###   ########.fr       */
+/*   Created: 2024/03/25 14:21:43 by motoko            #+#    #+#             */
+/*   Updated: 2024/03/25 15:03:47 by motoko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#pragma once
+
 #include <iostream>
+#include <string>
+#include <fstream>
 #include <cstdlib>
 
-#include "BitcoinExchange.hpp"
+class BitcoinExchange {
+	private:
 
-int	main(int ac, char **av) {
-	if (ac != 2) {
-		std::cout << "error : Invalid number of parameters."<< std::endl;
-        std::cout << "Usage: 1 parameter max." << std::endl;
-		return (EXIT_FAILURE);
-	}
+	public:
+		BitcoinExchange();
+		BitcoinExchange(const BitcoinExchange &rhs);
+		BitcoinExchange&	operator=(const BitcoinExchange &rhs);
+		~BitcoinExchange();
 
-	BitcoinExchange	exchange;
-
-	exchange.run(av[1]);
-
-	return (EXIT_SUCCESS);
-}
+		void	run(const std::string &filename);
+};
