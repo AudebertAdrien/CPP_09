@@ -6,7 +6,7 @@
 /*   By: motoko <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 14:23:36 by motoko            #+#    #+#             */
-/*   Updated: 2024/03/27 15:48:59 by motoko           ###   ########.fr       */
+/*   Updated: 2024/03/28 15:34:49 by motoko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ BitcoinExchange::BitcoinExchange() {
 	{
 		size_t delim = line.find(',');
 		std::string date = ft_trim(line.substr(0, delim));
-		std::string value = ft_trim(line.substr(delim + 1, line.length()));
+		float	value = ft_stof(ft_trim(line.substr(delim + 1, line.length())));
 
 		_data[date] = value;
 	}
@@ -71,6 +71,16 @@ double BitcoinExchange::ft_stod(const std::string &str)
     return value;
 }
 
+float	BitcoinExchange::ft_stof(const std::string &str)
+{
+    std::stringstream ss(str);
+	float value;
+
+    ss >> value;
+
+    return value;
+}
+
 std::string BitcoinExchange::ft_itos(int value)
 {
     std::stringstream ss;
@@ -104,8 +114,6 @@ bool	BitcoinExchange::allDigits(const std::string &str) {
 }
 
 bool	BitcoinExchange::validDate(std::string &date) {
-	std::cout << "len : " << date.length() << std::endl;
-
 	if (date.length() != 10)
 		return false;
 	if (date[4] != '-' || date[7] != '-')
@@ -145,6 +153,44 @@ bool	BitcoinExchange::validDate(std::string &date) {
 	return true;
 }
 
+void BitcoinExchange::validateNumber(const std::string &str) {
+	double value;
+
+	if (std::find(str.begin(), str.end(), '.') != str.end()) {
+		size_t decimalPoint = str.find('.');
+		if (std::find(str.begin() + decimalPoint + 1, str.end(), '.') != str.end())
+			throw std::invalid_argument("too many decimal points");
+	}
+
+	bool hasSign = str[0] == '+' || str[0] == '-';
+	int i = 0;
+	if (hasSign) 
+		i++;
+	while(str[i]) {
+		if (isdigit(str[i]) || str[i] == '.') 
+			i++;
+		else
+			throw std::invalid_argument("not a number => " + str);
+	}
+
+	value = ft_stod(str);
+
+
+	if (value < 0)
+		throw std::invalid_argument("not a positive number");
+
+	if (value > 1000.0)
+		throw std::invalid_argument("too large a number");
+}
+
+
+float	BitcoinExchange::getExchangeRate(const std::string &date) const {
+	std::map<std::string, float>::const_iterator it = _data.lower_bound(date);
+	if (it != _data.begin() && (it == _data.end() || it->first != date)) 
+		--it;
+	return (it->second);
+}
+
 void	BitcoinExchange::run(const std::string &filename) {
 	std::ifstream	file(filename.c_str());
 	std::string		line;
@@ -176,17 +222,21 @@ void	BitcoinExchange::run(const std::string &filename) {
 		}
 
 		std::string date = ft_trim(line.substr(0, delim));
-		std::string value = ft_trim(line.substr(delim + 1));
-		std::cout << "date >> " << date << std::endl;
-		std::cout << "value >> " << value << std::endl;
+		std::string quantity  = ft_trim(line.substr(delim + 1));
 
 		try {
 			if (!validDate(date))
 				throw std::invalid_argument("invalid date: " + (date.empty() ? "\"\"" : "'" + date + "'"));
-			if(value.empty())
-				throw std::invalid_argument("invalid value: " + (value.empty() ? "\"\"" : "'" + value + "'"));
+			if(quantity.empty())
+				throw std::invalid_argument("invalid value: " + (quantity.empty() ? "\"\"" : "'" + quantity + "'"));
 
+		validateNumber(quantity);
 
+		float ratio = getExchangeRate(date);
+
+		std::cout << "date >> " << date << std::endl;
+		std::cout << "quantity >> " << quantity  << std::endl;
+		std::cout << "ratio >> " << ft_stof(quantity) * ratio  << std::endl;
 
 		} catch (std::exception &e) {
 			std::cerr << "error : " << e.what() << std::endl;
