@@ -6,7 +6,7 @@
 /*   By: motoko <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 16:33:53 by motoko            #+#    #+#             */
-/*   Updated: 2024/03/27 17:32:31 by motoko           ###   ########.fr       */
+/*   Updated: 2024/03/28 15:40:53 by motoko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ void	RPN::reversePolishNotation(const std::string &expr)
 	}
 	if (_stack.size() != 1)
 		throw tooManyOperands();
+
 	_result = _stack.top();
 	_stack.pop();
 }
